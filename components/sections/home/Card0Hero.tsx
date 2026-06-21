@@ -1,0 +1,147 @@
+'use client'
+import { motion } from 'motion/react'
+import dynamic from 'next/dynamic'
+import { useInView } from 'react-intersection-observer'
+import { GlassButton } from '@/components/ui/GlassButton'
+import { MagneticButton } from '@/components/ui/MagneticButton'
+import { ArrowRight, ArrowDown } from 'lucide-react'
+
+// SSR=false: Three.js/WebGL requires browser context
+const CoinHero = dynamic(
+  () => import('@/components/3d/CoinHero').then((m) => m.CoinHero),
+  { ssr: false, loading: () => null }
+)
+
+export function Card0Hero() {
+  const { ref: sectionRef, inView } = useInView({
+    threshold: 0,
+    rootMargin: '200px 0px 0px 0px',
+  })
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center overflow-hidden"
+      style={{ background: 'var(--surface)' }}
+    >
+      {/* Subtle radial glow behind coin */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 55% 60% at 72% 50%, rgba(239,20,110,0.07) 0%, transparent 70%)',
+        }}
+      />
+
+      {/* Two-column grid: text left, coin right */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0 items-center pt-28 pb-16">
+        {/* LEFT — headline + CTAs */}
+        <motion.div
+          initial={{ opacity: 0, x: -28 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Pill badge */}
+          <motion.div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-7 w-fit"
+            style={{ border: '1px solid rgba(11,131,255,0.2)' }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-semibold tracking-widest uppercase font-poppins" style={{ color: 'var(--on-surface-2)' }}>
+              Built for TRON
+            </span>
+          </motion.div>
+
+          <motion.h1
+            className="font-grifter font-bold leading-[1.05] mb-6"
+            style={{ color: 'var(--on-surface)', fontSize: 'clamp(2.6rem, 5.5vw, 5rem)' }}
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+          >
+            The TRON Network.
+            <br />
+            <span style={{ color: 'var(--primary)' }}>In Your Pocket.</span>
+          </motion.h1>
+
+          <motion.p
+            className="text-lg md:text-xl max-w-md mb-10 font-poppins leading-relaxed"
+            style={{ color: 'var(--on-surface-2)' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+          >
+            Coinductor connects you to a wallet that moves at the speed of TRON — without the 30 TRX tax.
+          </motion.p>
+
+          <motion.div
+            className="flex flex-wrap gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+          >
+            <MagneticButton>
+              <GlassButton variant="solid" size="lg" href="/subscription">
+                Get the App <ArrowRight size={18} />
+              </GlassButton>
+            </MagneticButton>
+            <GlassButton variant="outline" size="lg" href="/features">
+              See How It Works
+            </GlassButton>
+          </motion.div>
+
+          {/* Trust stats */}
+          <motion.div
+            className="flex gap-8 mt-12 flex-wrap"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+          >
+            {[
+              { value: '30 TRX', label: 'Avg Saving' },
+              { value: '10M+', label: 'Wallets' },
+              { value: '0%', label: 'Custodial Risk' },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col">
+                <span className="font-grifter font-bold text-2xl" style={{ color: 'var(--on-surface)' }}>
+                  {stat.value}
+                </span>
+                <span className="text-xs font-poppins mt-0.5" style={{ color: 'var(--on-surface-2)', opacity: 0.5 }}>
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* RIGHT — draggable 3D TRX coin */}
+        <motion.div
+          className="relative h-[380px] md:h-[520px] lg:h-[600px]"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {inView && <CoinHero className="w-full h-full" />}
+        </motion.div>
+      </div>
+
+      {/* Bottom fade-in to next section */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-28 z-[1] pointer-events-none"
+        style={{ background: 'linear-gradient(180deg, transparent, var(--surface))' }}
+      />
+
+      {/* Scroll cue */}
+      <motion.div
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1"
+        style={{ color: 'var(--on-surface-2)', opacity: 0.3 }}
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <ArrowDown size={16} />
+      </motion.div>
+    </section>
+  )
+}

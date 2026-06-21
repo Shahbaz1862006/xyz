@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* ─── Tailwind v4 dark-mode variant (class-based via next-themes) ── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── Design Tokens ────────────────────────────────── */
+@theme {
+  --color-primary:       #0B83FF;
+  --color-primary-light: #4DA3FF;
+  --color-tron-red:      #EF146E;
+  --color-usdt-green:    #26A17B;
+  --color-bg-dark:       #04070F;
+  --color-bg-light:      #D9E8F3;
+
+  --font-grifter: 'Grifter', system-ui, sans-serif;
+  --font-poppins:  var(--font-poppins), system-ui, sans-serif;
+
+  --radius-card: 20px;
+
+  --animate-marquee:    marquee 30s linear infinite;
+  --animate-float:      float 4s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-spin-slow:  spin 30s linear infinite;
+  --animate-shimmer:    shimmer 2s ease-in-out infinite;
+
+  --shadow-glass:        0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+  --shadow-primary-glow: 0 0 40px rgba(11,131,255,0.4);
+}
+
+/* ─── Keyframes ───────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-16px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.5); }
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%)  skewX(-15deg); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── GRIFTER Font ────────────────────────────────────
+   Place grifterbold.otf in /public/fonts/ to activate.
+   Gracefully falls back to system-ui until then.        */
+@font-face {
+  font-family: 'Grifter';
+  src: url('/fonts/grifterbold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Semantic CSS Variables (dark = default) ──────── */
+:root {
+  --primary:       #0B83FF;
+  --primary-light: #4DA3FF;
+  --primary-glow:  rgba(11, 131, 255, 0.2);
+  --tron-red:      #EF146E;
+  --usdt-green:    #26A17B;
+  --r-lg:          20px;
+
+  /* Surfaces — dark default */
+  --surface:      #04070F;
+  --surface-2:    #0A1220;
+  --on-surface:   #EAF2FB;
+  --on-surface-2: rgba(234, 242, 251, 0.55);
+
+  --glass-bg:     rgba(20, 35, 60, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-top:    rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Light Mode Overrides ─────────────────────────── */
+html.light {
+  --surface:      #EEF5FB;
+  --surface-2:    #DDEAF5;
+  --on-surface:   #0A1A2A;
+  --on-surface-2: rgba(10, 26, 42, 0.55);
+
+  --glass-bg:     rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(11, 131, 255, 0.12);
+  --glass-top:    rgba(255, 255, 255, 0.7);
+}
+
+/* ─── Base ─────────────────────────────────────────── */
+html {
+  scroll-behavior: auto;
+  color-scheme: dark;
+}
+html.light { color-scheme: light; }
+
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  background: var(--surface);
+  color: var(--on-surface);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* ─── Glass Card ──────────────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-glass);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+/* Top highlight line */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-top), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover sheen sweep */
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  pointer-events: none;
+}
+.glass-card:hover::after {
+  animation: shimmer 0.7s ease-in-out forwards;
+}
+
+/* ─── Marquee ─────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: var(--animate-marquee);
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ─── Scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(11, 131, 255, 0.25);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(11, 131, 255, 0.45); }
+
+/* ─── Selection ───────────────────────────────────── */
+::selection { background: rgba(11, 131, 255, 0.25); color: var(--on-surface); }
+
+/* ─── Reduced Motion ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation-play-state: paused; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
