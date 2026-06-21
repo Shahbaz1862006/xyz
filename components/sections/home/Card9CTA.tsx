@@ -5,7 +5,7 @@ import { GlassButton } from '@/components/ui/GlassButton'
 
 export function Card9CTA() {
   return (
-    <section className="relative py-32 px-4 overflow-hidden">
+    <section className="relative py-20 md:py-32 px-4 overflow-hidden">
       {/* Deep ambient background — no coin rain, no dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"

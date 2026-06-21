@@ -33,7 +33,7 @@ export function SectionHeadline({
       <h2
         className={cn(
           'font-grifter font-bold leading-tight tracking-tight',
-          'text-4xl md:text-5xl lg:text-6xl',
+          'text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl',
           titleClassName
         )}
         style={{ color: 'var(--on-surface)' }}
@@ -51,7 +51,7 @@ export function SectionHeadline({
       {subtitle && (
         <p
           className={cn(
-            'mt-4 text-lg font-poppins leading-relaxed max-w-2xl',
+            'mt-4 text-sm sm:text-base md:text-lg font-poppins leading-relaxed max-w-2xl',
             align === 'center' && 'mx-auto'
           )}
           style={{ color: 'var(--on-surface-2)' }}

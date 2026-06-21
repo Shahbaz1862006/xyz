@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
-import { TronIcon } from '@/components/ui/TronIcon'
 import { UsdtIcon } from '@/components/ui/UsdtIcon'
 import { Copy, CheckCircle2 } from 'lucide-react'
 
@@ -107,7 +106,7 @@ function WalletCard({ wallet, index }: { wallet: typeof wallets[0]; index: numbe
         {/* Balance tiles */}
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { icon: <TronIcon size={13} />, label: 'TRX', value: wallet.trx },
+            { icon: <img src="/trx.svg" width={13} height={13} alt="TRX" />, label: 'TRX', value: wallet.trx },
             { icon: <UsdtIcon size={13} />, label: 'USDT', value: wallet.usdt },
           ].map(({ icon, label, value }) => (
             <div
@@ -130,7 +129,7 @@ function WalletCard({ wallet, index }: { wallet: typeof wallets[0]; index: numbe
 
 export function Card4Wallets() {
   return (
-    <section className="py-24 px-4 relative">
+    <section className="py-14 md:py-24 px-4 relative">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 55% 45% at 55% 50%, rgba(11,131,255,0.05) 0%, transparent 70%)' }}

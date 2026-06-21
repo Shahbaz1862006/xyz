@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { TronIcon } from '@/components/ui/TronIcon'
 import { Code2, X, Send } from 'lucide-react'
+import { CoinductorLogo } from '@/components/ui/CoinductorLogo'
 
 const columns = [
   {
@@ -48,14 +48,11 @@ export function Footer() {
       style={{ borderColor: 'var(--glass-border)' }}
     >
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 md:gap-10 mb-12">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <TronIcon size={26} />
-              <span className="font-grifter font-bold text-xl" style={{ color: 'var(--on-surface)' }}>
-                Coinductor
-              </span>
+          <div className="col-span-2 sm:col-span-3 md:col-span-1">
+            <Link href="/" className="inline-flex mb-4">
+              <CoinductorLogo height={26} />
             </Link>
             <p className="text-sm font-poppins leading-relaxed" style={{ color: 'var(--on-surface-2)' }}>
               Smart fee routing for the TRON network. Save on every transfer.

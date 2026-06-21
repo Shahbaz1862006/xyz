@@ -1,7 +1,6 @@
 'use client'
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
 import { useTheme } from 'next-themes'
 import { TrxCoin } from './TrxCoin'
 import { OrbitRings } from './OrbitRings'
@@ -68,26 +67,26 @@ export function CoinHero({ className }: { className?: string }) {
         dpr={[1, 1.5]}
         frameloop="always"
       >
-        {/* Reflection env only - background=false keeps WebGL canvas transparent */}
-        <Environment preset="city" background={false} />
+        {/* Ambient — keeps shadows from going pitch black */}
+        <ambientLight intensity={isDark ? 0.22 : 0.42} />
 
-        {/* Ambient */}
-        <ambientLight intensity={isDark ? 0.35 : 0.55} />
+        {/* Key light — upper-right, primary highlight */}
+        <directionalLight position={[4, 5, 6]} intensity={isDark ? 2.4 : 1.8} color="#ffffff" />
 
-        {/* Key light */}
-        <directionalLight position={[4, 5, 6]} intensity={isDark ? 1.5 : 1.2} color="#ffffff" />
+        {/* Fill — soft blue-white from upper-left */}
+        <directionalLight position={[-4, 2, 4]} intensity={isDark ? 0.7 : 0.5} color="#dce8ff" />
 
-        {/* Fill light */}
-        <directionalLight position={[-4, 2, 4]} intensity={isDark ? 0.5 : 0.35} color="#dce8ff" />
+        {/* Red accent from above */}
+        <pointLight position={[0, 6, 3]} intensity={isDark ? 2.0 : 1.0} color="#FF1A35" />
 
-        {/* Red accent */}
-        <pointLight position={[0, 5, 3]} intensity={isDark ? 1.0 : 0.55} color="#FF1A35" />
+        {/* Back rim — red glow from behind */}
+        <pointLight position={[-4, -3, -4]} intensity={isDark ? 0.8 : 0.5} color="#CC0018" />
 
-        {/* Back rim */}
-        <pointLight position={[-4, -3, -3]} intensity={0.4} color="#CC0018" />
+        {/* Right-side rim — edge highlight when coin faces left */}
+        <pointLight position={[5, 0, -3]} intensity={isDark ? 0.6 : 0.35} color="#ff6070" />
 
-        {/* Bottom fill */}
-        <pointLight position={[2, -5, 3]} intensity={isDark ? 0.5 : 0.35} color="#ffffff" />
+        {/* Bottom fill — prevents dark lower half */}
+        <pointLight position={[2, -5, 3]} intensity={isDark ? 0.7 : 0.45} color="#ffffff" />
 
         <TrxCoin
           dragRotation={dragRotation.current}

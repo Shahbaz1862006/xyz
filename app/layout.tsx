@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { LenisProvider } from '@/components/layout/LenisProvider'
+import { ClientInit } from '@/components/ClientInit'
 import '@/styles/globals.css'
 
 const poppins = Poppins({
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <LenisProvider>
+            <ClientInit />
             <Header />
             <main>{children}</main>
             <Footer />

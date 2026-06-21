@@ -14,7 +14,7 @@ const metaStats = [
 
 export function Card3Energy() {
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section className="py-14 md:py-24 px-4 relative overflow-hidden">
       {/* Section background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -26,7 +26,7 @@ export function Card3Energy() {
           GlassCard wraps everything — but NO overflow-hidden so the GaugeRing
           drop-shadow (which uses SVG overflow:visible) can glow freely through the card edges.
         */}
-        <GlassCard className="p-10 md:p-16 relative" scrollLinked>
+        <GlassCard className="p-5 sm:p-8 md:p-16 relative" scrollLinked>
 
           {/* Subtle wave lines decoration inside card */}
           <svg
@@ -53,7 +53,7 @@ export function Card3Energy() {
                 The SVG's overflow:visible lets the glow extend past SVG bounds,
                 and the card has no overflow-hidden to clip it.
               */}
-              <div className="flex justify-center items-center gap-14 lg:gap-16 py-4">
+              <div className="flex justify-center items-center gap-6 sm:gap-12 lg:gap-16 py-4">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.75 }}
                   whileInView={{ opacity: 1, scale: 1 }}

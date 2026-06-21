@@ -32,7 +32,7 @@ const steps = [
 
 export function Card7HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 px-4 relative">
+    <section id="how-it-works" className="py-14 md:py-24 px-4 relative">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(11,131,255,0.04) 0%, transparent 70%)' }}
@@ -47,17 +47,6 @@ export function Card7HowItWorks() {
         />
 
         <div className="relative">
-          {/* Horizontal connector line — desktop only */}
-          <div className="hidden md:block absolute top-[52px] left-[16.6%] right-[16.6%] h-px" style={{ background: 'rgba(255,255,255,0.06)' }}>
-            {/* Animated flow dot */}
-            <motion.div
-              className="absolute top-1/2 -translate-y-1/2 w-12 h-[1px]"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(11,131,255,0.6), transparent)' }}
-              animate={{ x: ['-20%', '120%'] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.5 }}
-            />
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {steps.map((step, i) => {
               const Icon = step.icon

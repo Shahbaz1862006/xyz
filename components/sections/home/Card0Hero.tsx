@@ -9,7 +9,17 @@ import { ArrowRight, ArrowDown } from 'lucide-react'
 
 const CoinHero = dynamic(
   () => import('@/components/3d/CoinHero').then((m) => m.CoinHero),
-  { ssr: false, loading: () => null }
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center">
+        <div
+          className="w-40 h-40 rounded-full animate-pulse"
+          style={{ background: 'radial-gradient(circle, rgba(239,0,39,0.18) 0%, rgba(239,0,39,0.04) 60%, transparent 100%)' }}
+        />
+      </div>
+    ),
+  }
 )
 
 /* ── Background layer with animated dot grid + glowing orbs + scan line ── */
@@ -67,7 +77,7 @@ function HeroBackground() {
 
 export function Card0Hero() {
   const sectionRef = useRef<HTMLElement>(null)
-  const { ref: inViewRef, inView } = useInView({ threshold: 0, rootMargin: '200px 0px 0px 0px' })
+  const { ref: inViewRef } = useInView({ threshold: 0, rootMargin: '200px 0px 0px 0px' })
 
   const setRef = useCallback(
     (el: HTMLElement | null) => {
@@ -193,26 +203,21 @@ export function Card0Hero() {
 
         {/* RIGHT — draggable 3D TRX coin */}
         <motion.div
-          className="relative h-[380px] md:h-[520px] lg:h-[600px]"
+          className="relative h-[280px] sm:h-[380px] md:h-[520px] lg:h-[600px] overflow-hidden"
           style={{ y: coinY }}
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/*
-            Canvas expands well beyond the column box so bloom / orbit rings
-            fade to zero before hitting the WebGL clip boundary — no visible
-            rectangular edge. Radial mask fades the canvas corners to transparent.
-          */}
           <div
             className="absolute"
             style={{
-              inset: '-30% -40%',
+              inset: '-20% -25%',
               maskImage: 'radial-gradient(ellipse 65% 65% at 50% 50%, white 35%, transparent 78%)',
               WebkitMaskImage: 'radial-gradient(ellipse 65% 65% at 50% 50%, white 35%, transparent 78%)',
             }}
           >
-            {inView && <CoinHero className="w-full h-full" />}
+            <CoinHero className="w-full h-full" />
           </div>
         </motion.div>
       </div>

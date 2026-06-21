@@ -61,20 +61,3 @@ export const slideInRight: Variants = {
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 }
-
-export const cardStackVariants: Variants = {
-  stacked: { x: 0, y: 0, rotate: 0, scale: 0.88, opacity: 0.6 },
-  fanned: (i: number) => ({
-    x: (i - 1.5) * 110,
-    y: 0,
-    rotate: (i - 1.5) * 5,
-    scale: 1,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 18,
-      delay: i * 0.08,
-    },
-  }),
-}

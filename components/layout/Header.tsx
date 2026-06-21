@@ -6,7 +6,7 @@ import { Menu, X } from 'lucide-react'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { MagneticButton } from '@/components/ui/MagneticButton'
 import { GlassButton } from '@/components/ui/GlassButton'
-import { TronIcon } from '@/components/ui/TronIcon'
+import { CoinductorLogo } from '@/components/ui/CoinductorLogo'
 
 const navLinks = [
   { label: 'Features',  href: '/features'      },
@@ -44,14 +44,8 @@ export function Header() {
         }}
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <TronIcon size={26} />
-          <span
-            className="font-grifter font-bold text-xl tracking-tight transition-colors"
-            style={{ color: 'var(--on-surface)' }}
-          >
-            Coinductor
-          </span>
+        <Link href="/" className="flex items-center group">
+          <CoinductorLogo height={28} />
         </Link>
 
         {/* Desktop nav */}

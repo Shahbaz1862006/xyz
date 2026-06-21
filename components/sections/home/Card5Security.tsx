@@ -8,7 +8,17 @@ import { Key, Lock, Eye, Shield } from 'lucide-react'
 
 const ShieldHero = dynamic(
   () => import('@/components/3d/ShieldHero').then((m) => m.ShieldHero),
-  { ssr: false, loading: () => null }
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center">
+        <div
+          className="w-32 h-32 rounded-2xl animate-pulse"
+          style={{ background: 'radial-gradient(ellipse, rgba(11,131,255,0.15) 0%, rgba(11,131,255,0.03) 60%, transparent 100%)' }}
+        />
+      </div>
+    ),
+  }
 )
 
 const securityFeatures = [
@@ -43,17 +53,17 @@ const securityFeatures = [
 ]
 
 export function Card5Security() {
-  const { ref, inView } = useInView({ threshold: 0, rootMargin: '100px 0px 0px 0px', triggerOnce: false })
+  const { ref, inView } = useInView({ threshold: 0, rootMargin: '400px 0px 0px 0px', triggerOnce: true })
 
   return (
-    <section className="py-24 px-4 relative">
+    <section className="py-14 md:py-24 px-4 relative">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 55% 45% at 60% 50%, rgba(11,131,255,0.05) 0%, transparent 70%)' }}
       />
 
       <div className="max-w-6xl mx-auto">
-        <GlassCard className="p-10 md:p-16 overflow-hidden" scrollLinked>
+        <GlassCard className="p-5 sm:p-8 md:p-16 overflow-hidden" scrollLinked>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
             {/* Left: text + feature cards */}
@@ -102,13 +112,13 @@ export function Card5Security() {
             {/* Right: 3D floating shield */}
             <div
               ref={ref}
-              className="relative h-[420px] flex items-center justify-center"
+              className="relative h-[260px] sm:h-[360px] md:h-[420px] flex items-center justify-center"
             >
-              {/* Shield canvas — expanded with mask like CoinHero */}
+              {/* Shield canvas */}
               <div
                 className="absolute"
                 style={{
-                  inset: '-25% -30%',
+                  inset: '-20% -25%',
                   maskImage: 'radial-gradient(ellipse 65% 65% at 50% 50%, white 35%, transparent 78%)',
                   WebkitMaskImage: 'radial-gradient(ellipse 65% 65% at 50% 50%, white 35%, transparent 78%)',
                 }}
@@ -116,15 +126,15 @@ export function Card5Security() {
                 {inView && <ShieldHero className="w-full h-full" />}
               </div>
 
-              {/* Floating security badge labels */}
+              {/* Floating security badge labels — hidden on very small screens */}
               {[
-                { label: 'AES-256', x: '-48%', y: '18%' },
-                { label: 'Non-Custodial', x: '42%', y: '22%' },
-                { label: 'Zero KYC', x: '-38%', y: '72%' },
+                { label: 'AES-256', x: '-42%', y: '18%' },
+                { label: 'Non-Custodial', x: '36%', y: '22%' },
+                { label: 'Zero KYC', x: '-34%', y: '70%' },
               ].map(({ label, x, y }, idx) => (
                 <motion.div
                   key={label}
-                  className="absolute glass-card px-3 py-1.5 rounded-lg z-20 pointer-events-none"
+                  className="absolute glass-card px-3 py-1.5 rounded-lg z-20 pointer-events-none hidden sm:block"
                   style={{
                     left: x, top: y,
                     border: '1px solid rgba(11,131,255,0.25)',

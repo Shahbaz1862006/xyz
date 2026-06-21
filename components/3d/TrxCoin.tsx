@@ -60,37 +60,35 @@ export function TrxCoin({
     []
   )
 
-  // ── Materials — PBR (MeshStandardMaterial responds to Environment) ────────
+  // ── Materials — tuned for direct-light-only (no environment map) ─────────
 
   const coinMaterials = useMemo<THREE.Material[]>(
     () => [
-      new THREE.MeshStandardMaterial({   // 0 — side: deep satin red
+      new THREE.MeshStandardMaterial({   // 0 — side: deep satin red rim
         color:     new THREE.Color('#C90020'),
-        metalness: 0.88,
-        roughness: 0.16,
+        metalness: 0.65,
+        roughness: 0.22,
       }),
-      new THREE.MeshStandardMaterial({   // 1 — FRONT: vivid TRX red (matches official #EF0027)
-        color:          new THREE.Color('#EF0027'),
-        metalness:      0.55,
-        roughness:      0.38,
-        envMapIntensity: 0.3,
+      new THREE.MeshStandardMaterial({   // 1 — FRONT: vivid TRX red face
+        color:     new THREE.Color('#EF0027'),
+        metalness: 0.4,
+        roughness: 0.48,
       }),
       new THREE.MeshStandardMaterial({   // 2 — BACK: darker red
         color:     new THREE.Color('#7A0012'),
-        metalness: 0.8,
-        roughness: 0.3,
+        metalness: 0.55,
+        roughness: 0.38,
       }),
     ],
     []
   )
 
-  // White-silver logo — polished but not overexposed
+  // White-silver logo — catches direct key light as bright specular highlight
   const logoMaterial = useMemo(
     () => new THREE.MeshStandardMaterial({
-      color:          new THREE.Color('#F0F4FF'),
-      metalness:      0.7,
-      roughness:      0.2,
-      envMapIntensity: 0.3,
+      color:     new THREE.Color('#F0F4FF'),
+      metalness: 0.6,
+      roughness: 0.26,
     }),
     []
   )

@@ -4,15 +4,14 @@ import { StatCounter } from '@/components/ui/StatCounter'
 import { motion } from 'motion/react'
 
 const stats = [
-  { value: 85,   suffix: 'B+',  prefix: '$', label: 'Stablecoins on TRON', color: '#26A17B', glow: 'rgba(38,161,123,0.12)' },
-  { value: 10,   suffix: 'M+',  prefix: '',  label: 'Active Wallets',      color: '#0B83FF', glow: 'rgba(11,131,255,0.12)' },
-  { value: 98,   suffix: '%',   prefix: '',  label: 'Global USDT Volume',   color: '#0B83FF', glow: 'rgba(11,131,255,0.1)' },
-  { value: 2000, suffix: ' TPS',prefix: '',  label: 'Network Throughput',   color: '#EF0027', glow: 'rgba(239,0,39,0.1)' },
+  { value: 85, suffix: 'B+', prefix: '$', label: 'Stablecoins on TRON', color: '#26A17B', glow: 'rgba(38,161,123,0.12)' },
+  { value: 10, suffix: 'M+', prefix: '',  label: 'Active Wallets',      color: '#0B83FF', glow: 'rgba(11,131,255,0.12)' },
+  { value: 98, suffix: '%',  prefix: '',  label: 'Global USDT Volume',  color: '#0B83FF', glow: 'rgba(11,131,255,0.1)'  },
 ]
 
 export function Card6Trust() {
   return (
-    <section className="py-24 px-4 relative">
+    <section className="py-14 md:py-24 px-4 relative">
       {/* Background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -23,7 +22,7 @@ export function Card6Trust() {
       <div className="max-w-6xl mx-auto relative">
         {/* Stats row */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

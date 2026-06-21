@@ -11,14 +11,14 @@ const stats = [
 
 export function Card1Problem() {
   return (
-    <section className="py-24 px-4 relative">
+    <section className="py-14 md:py-24 px-4 relative">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(239,0,39,0.05) 0%, transparent 70%)' }}
       />
 
       <div className="max-w-6xl mx-auto relative">
-        <GlassCard className="p-10 md:p-16 text-center overflow-hidden" scrollLinked>
+        <GlassCard className="p-5 sm:p-8 md:p-16 text-center overflow-hidden" scrollLinked>
           <div className="absolute inset-0 bg-dots animate-drift opacity-20 pointer-events-none rounded-card" />
 
           <div className="relative z-10">
