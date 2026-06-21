@@ -3,87 +3,121 @@ import { motion } from 'motion/react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
 import { GaugeRing } from '@/components/ui/GaugeRing'
+import { Zap, Wifi, Clock, TrendingDown } from 'lucide-react'
 
-function ParticleStream() {
-  const particles = Array.from({ length: 10 }, (_, i) => ({
-    id: i,
-    y: 15 + (i * 7) % 70,
-    delay: i * 0.25,
-    duration: 2.5 + (i % 3) * 0.8,
-    size: 3 + (i % 3),
-  }))
-
-  return (
-    <div className="absolute inset-0 overflow-hidden rounded-card pointer-events-none">
-      <svg className="absolute inset-0 w-full h-full opacity-15" viewBox="0 0 400 200">
-        <path
-          d="M -20 100 Q 100 40 200 100 Q 300 160 420 100"
-          fill="none"
-          stroke="rgba(11,131,255,0.5)"
-          strokeWidth="1"
-        />
-        <path
-          d="M -20 60 Q 120 120 240 60 Q 360 0 440 60"
-          fill="none"
-          stroke="rgba(11,131,255,0.25)"
-          strokeWidth="0.8"
-        />
-      </svg>
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full bg-primary"
-          style={{
-            width: p.size,
-            height: p.size,
-            top: `${p.y}%`,
-            boxShadow: `0 0 ${p.size * 3}px rgba(11,131,255,0.7)`,
-          }}
-          animate={{ x: ['0%', '110vw'], opacity: [0, 1, 1, 0] }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            delay: p.delay,
-            ease: 'linear',
-            times: [0, 0.1, 0.9, 1],
-          }}
-          initial={{ x: '-5%' }}
-        />
-      ))}
-    </div>
-  )
-}
+const metaStats = [
+  { label: 'Energy Limit',   value: '65,000',  unit: 'Units',        icon: Zap,          glow: 'rgba(11,131,255,0.18)',  color: '#0B83FF' },
+  { label: 'Bandwidth Left', value: '5,000',   unit: 'Bytes',        icon: Wifi,         glow: 'rgba(38,161,123,0.18)',  color: '#26A17B' },
+  { label: 'Next Reset',     value: '18h 24m', unit: 'until refill', icon: Clock,        glow: 'rgba(11,131,255,0.12)',  color: '#6BA8FF' },
+  { label: 'Rental Rate',    value: '0.001',   unit: 'TRX / Unit',   icon: TrendingDown, glow: 'rgba(239,0,39,0.12)',    color: '#EF0027' },
+]
 
 export function Card3Energy() {
   return (
-    <section className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
-        <GlassCard className="p-10 md:p-16 relative overflow-hidden" scrollLinked>
-          <ParticleStream />
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <SectionHeadline
-              title="Energy & Bandwidth."
-              accent="Always Visible."
-              subtitle="Know exactly how much energy and bandwidth you have before every transaction. No more failed transfers from empty resources."
-            />
-            <div className="flex justify-center gap-12">
-              <GaugeRing value={78} label="Energy Available" color="#0B83FF" size={140} />
-              <GaugeRing value={95} label="Bandwidth Free" color="#26A17B" size={140} />
-            </div>
-          </div>
+    <section className="py-24 px-4 relative overflow-hidden">
+      {/* Section background glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 65% 50% at 50% 45%, rgba(11,131,255,0.06) 0%, transparent 70%)' }}
+      />
 
-          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-            {[
-              { label: 'Energy Limit', value: '65,000 Units' },
-              { label: 'Bandwidth Left', value: '5,000 Bytes' },
-              { label: 'Next Reset', value: '18h 24m' },
-              { label: 'Rental Rate', value: '0.001 TRX/Unit' },
-            ].map((item) => (
-              <div key={item.label} className="glass-card p-4 rounded-xl text-center">
-                <p className="text-xs font-poppins mb-1" style={{ color: 'var(--on-surface-2)', opacity: 0.5 }}>{item.label}</p>
-                <p className="font-semibold text-sm font-poppins" style={{ color: 'var(--on-surface)' }}>{item.value}</p>
+      <div className="max-w-6xl mx-auto">
+        {/*
+          GlassCard wraps everything — but NO overflow-hidden so the GaugeRing
+          drop-shadow (which uses SVG overflow:visible) can glow freely through the card edges.
+        */}
+        <GlassCard className="p-10 md:p-16 relative" scrollLinked>
+
+          {/* Subtle wave lines decoration inside card */}
+          <svg
+            className="absolute inset-0 w-full h-full opacity-[0.07] pointer-events-none rounded-card"
+            viewBox="0 0 800 400" preserveAspectRatio="none"
+            aria-hidden
+          >
+            <path d="M -20 200 Q 200 80 400 200 Q 600 320 820 200" fill="none" stroke="rgba(11,131,255,1)" strokeWidth="1.5" />
+            <path d="M -20 130 Q 230 240 460 130 Q 690 20 820 130"   fill="none" stroke="rgba(11,131,255,0.6)" strokeWidth="1" />
+            <path d="M -20 270 Q 200 160 400 270 Q 600 380 820 270"  fill="none" stroke="rgba(239,0,39,0.4)"   strokeWidth="0.8" />
+          </svg>
+
+          <div className="relative z-10">
+            {/* Top row: headline + gauge rings side by side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
+              <SectionHeadline
+                title="Energy & Bandwidth."
+                accent="Always Visible."
+                subtitle="Know exactly how much energy and bandwidth you have before every transaction. No more failed transfers from empty resources."
+              />
+
+              {/*
+                Gauges sit directly here — no extra wrapper div with overflow or border.
+                The SVG's overflow:visible lets the glow extend past SVG bounds,
+                and the card has no overflow-hidden to clip it.
+              */}
+              <div className="flex justify-center items-center gap-14 lg:gap-16 py-4">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.75 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <GaugeRing value={78} label="Energy Available" color="#0B83FF" size={148} />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.75 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <GaugeRing value={95} label="Bandwidth Free" color="#26A17B" size={148} />
+                </motion.div>
               </div>
-            ))}
+            </div>
+
+            {/* Bottom row: 4 stat cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {metaStats.map((item, i) => {
+                const Icon = item.icon
+                return (
+                  <motion.div
+                    key={item.label}
+                    className="relative p-5 rounded-2xl overflow-hidden"
+                    style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: `1px solid ${item.color}28`,
+                      boxShadow: `0 0 28px ${item.glow}, inset 0 1px 0 rgba(255,255,255,0.05)`,
+                    }}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.08 + 0.3, duration: 0.5 }}
+                    whileHover={{ scale: 1.04, y: -3, boxShadow: `0 0 48px ${item.glow}` }}
+                  >
+                    {/* Top accent */}
+                    <div
+                      className="absolute top-0 left-0 right-0 h-[1.5px]"
+                      style={{ background: `linear-gradient(90deg, ${item.color}80, transparent 60%)` }}
+                    />
+                    {/* Corner glow */}
+                    <div
+                      className="absolute top-0 left-0 w-16 h-16 pointer-events-none"
+                      style={{ background: `radial-gradient(circle at 0% 0%, ${item.color}20, transparent 70%)` }}
+                    />
+                    <Icon size={15} className="mb-2.5 relative z-10" style={{ color: item.color }} />
+                    <p className="text-[10px] font-poppins mb-0.5 relative z-10" style={{ color: 'var(--on-surface-2)', opacity: 0.46 }}>
+                      {item.label}
+                    </p>
+                    <p className="font-grifter font-bold text-lg relative z-10" style={{ color: 'var(--on-surface)' }}>
+                      {item.value}
+                    </p>
+                    {item.unit && (
+                      <p className="text-[10px] font-poppins mt-0.5 relative z-10" style={{ color: item.color, opacity: 0.65 }}>
+                        {item.unit}
+                      </p>
+                    )}
+                  </motion.div>
+                )
+              })}
+            </div>
           </div>
         </GlassCard>
       </div>

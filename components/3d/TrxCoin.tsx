@@ -2,29 +2,32 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { createTrxLogoShape } from './trxLogoShape'
+import { createTrxLogoShapes } from './trxLogoShape'
 
 /*
-  Coordinate system (after cylinder rotation = [Math.PI/2, 0, 0]):
-    Cylinder originally has axis along Y. Rotating 90° around X makes axis point along Z.
-    Camera is at z=7, looking toward origin.
-
-    CylinderGeometry material groups (Three.js convention):
-      Group 0 = side/tube  → the coin rim  → RED
-      Group 1 = top cap    → front face (+Z, toward camera)  → WHITE
-      Group 2 = bottom cap → back face (-Z, away from camera) → DARK RED
-
-    TorusGeometry lies in the XY plane by default (ring around Z axis) → correct for the rim.
-
-    ExtrudeGeometry extrudes shape (in XY plane) along +Z.
-    FRONT logo: position=[0,0,+HALF]         → base at coin front face, extrudes toward camera.
-    BACK  logo: position=[0,0,-HALF], rot.Y=π → base at coin back face, extrudes away from camera.
-                (rotation Y=π flips the Z direction so extrusion goes into -Z)
+  Coordinate system (cylinder rotation = [Math.PI/2, 0, 0]):
+    Cylinder axis originally along Y → rotated to point along Z.
+    Camera at z=7 looking toward origin.
+    CylinderGeometry material groups:
+      Group 0 = side/tube  → coin rim
+      Group 1 = top cap    → FRONT face (+Z, toward camera) → TRX RED
+      Group 2 = bottom cap → BACK face  (-Z, away)          → dark red
+    ExtrudeGeometry extrudes along +Z by default.
+    FRONT logo: position=[0,0,+HALF] → base at front face, extrudes toward camera.
+    BACK  logo: position=[0,0,-HALF], rotation.Y=π → extrudes away from camera.
 */
 
 const COIN_RADIUS    = 1.6
 const COIN_THICKNESS = 0.46
-const HALF           = COIN_THICKNESS / 2   // 0.23
+const HALF           = COIN_THICKNESS / 2
+
+const EXTRUDE: THREE.ExtrudeGeometryOptions = {
+  depth:          0.052,
+  bevelEnabled:   true,
+  bevelThickness: 0.01,
+  bevelSize:      0.007,
+  bevelSegments:  3,
+}
 
 interface TrxCoinProps {
   dragRotation: { x: number; y: number }
@@ -49,72 +52,46 @@ export function TrxCoin({
     [rimSegments]
   )
 
-  // Torus wraps the coin edge (XY plane = ring around Z axis)
-  const rimGeometry = useMemo(
-    () => new THREE.TorusGeometry(COIN_RADIUS + 0.02, 0.14, 16, rimSegments * 2),
-    [rimSegments]
+  // All 5 polygon facets of the real TRX logo from SVG path data
+  const logoGeometries = useMemo(
+    () => createTrxLogoShapes(COIN_RADIUS * 0.92).map(
+      shape => new THREE.ExtrudeGeometry(shape, EXTRUDE)
+    ),
+    []
   )
 
-  const logoShape = useMemo(() => createTrxLogoShape(COIN_RADIUS * 0.68), [])
+  // ── Materials — PBR (MeshStandardMaterial responds to Environment) ────────
 
-  const logoGeometry = useMemo(
-    () =>
-      new THREE.ExtrudeGeometry(logoShape, {
-        depth:           0.065,
-        bevelEnabled:    true,
-        bevelThickness:  0.016,
-        bevelSize:       0.010,
-        bevelSegments:   4,
-      }),
-    [logoShape]
-  )
-
-  // ── Materials ─────────────────────────────────────────────────────────────
-
-  // Multi-material array for the coin cylinder:
-  //   index 0 = side (rim), index 1 = top cap (FRONT), index 2 = bottom cap (BACK)
   const coinMaterials = useMemo<THREE.Material[]>(
     () => [
-      new THREE.MeshPhongMaterial({   // 0 — side: deep red, faceted
-        color:      new THREE.Color('#C0001A'),
-        specular:   new THREE.Color(0.9, 0.15, 0.2),
-        shininess:  100,
-        flatShading: true,
+      new THREE.MeshStandardMaterial({   // 0 — side: deep satin red
+        color:     new THREE.Color('#C90020'),
+        metalness: 0.88,
+        roughness: 0.16,
       }),
-      new THREE.MeshPhongMaterial({   // 1 — FRONT face: bright white-silver
-        color:     new THREE.Color('#EEF3FF'),
-        specular:  new THREE.Color(1, 1, 1),
-        shininess: 520,
+      new THREE.MeshStandardMaterial({   // 1 — FRONT: vivid TRX red (matches official #EF0027)
+        color:          new THREE.Color('#EF0027'),
+        metalness:      0.55,
+        roughness:      0.38,
+        envMapIntensity: 0.3,
       }),
-      new THREE.MeshPhongMaterial({   // 2 — BACK face: darker red
-        color:     new THREE.Color('#880012'),
-        specular:  new THREE.Color(0.5, 0.05, 0.1),
-        shininess: 80,
+      new THREE.MeshStandardMaterial({   // 2 — BACK: darker red
+        color:     new THREE.Color('#7A0012'),
+        metalness: 0.8,
+        roughness: 0.3,
       }),
     ],
     []
   )
 
-  const rimMaterial = useMemo(
-    () =>
-      new THREE.MeshPhongMaterial({
-        color:       new THREE.Color('#DD0018'),
-        specular:    new THREE.Color(1, 0.25, 0.3),
-        shininess:   220,
-        flatShading: true,
-      }),
-    []
-  )
-
+  // White-silver logo — polished but not overexposed
   const logoMaterial = useMemo(
-    () =>
-      new THREE.MeshPhongMaterial({
-        color:             new THREE.Color('#D10018'),
-        emissive:          new THREE.Color('#6A000C'),
-        emissiveIntensity: 0.35,
-        specular:          new THREE.Color(1, 0.4, 0.5),
-        shininess:         240,
-      }),
+    () => new THREE.MeshStandardMaterial({
+      color:          new THREE.Color('#F0F4FF'),
+      metalness:      0.7,
+      roughness:      0.2,
+      envMapIntensity: 0.3,
+    }),
     []
   )
 
@@ -148,35 +125,18 @@ export function TrxCoin({
     <group ref={floatRef}>
       <group ref={groupRef}>
 
-        {/* Coin body: side=red, front cap=white, back cap=dark-red */}
-        <mesh
-          rotation={[Math.PI / 2, 0, 0]}
-          geometry={coinGeometry}
-          material={coinMaterials}
-        />
+        {/* Coin body: side=deep-red, FRONT cap=TRX-red, BACK cap=dark-red */}
+        <mesh rotation={[Math.PI / 2, 0, 0]} geometry={coinGeometry} material={coinMaterials} />
 
-        {/* Beveled outer torus — flat-shaded facets catch the key light */}
-        <mesh geometry={rimGeometry} material={rimMaterial} />
+        {/* TRX white-silver logo — FRONT face (5 facets from official SVG) */}
+        {logoGeometries.map((geo, i) => (
+          <mesh key={`f${i}`} geometry={geo} material={logoMaterial} position={[0, 0, HALF]} />
+        ))}
 
-        {/* TRX logo — FRONT face: base at z=+HALF, extrudes toward camera */}
-        <mesh
-          geometry={logoGeometry}
-          material={logoMaterial}
-          position={[0, 0, HALF]}
-        />
-
-        {/*
-          TRX logo — BACK face.
-          rotation Y=π flips the extrusion direction from +Z to −Z.
-          position z=−HALF puts the base exactly at the back face;
-          the extrusion then goes from z=−HALF to z=−HALF−0.065 (outward).
-        */}
-        <mesh
-          geometry={logoGeometry}
-          material={logoMaterial}
-          position={[0, 0, -HALF]}
-          rotation={[0, Math.PI, 0]}
-        />
+        {/* TRX white-silver logo — BACK face (mirrored) */}
+        {logoGeometries.map((geo, i) => (
+          <mesh key={`b${i}`} geometry={geo} material={logoMaterial} position={[0, 0, -HALF]} rotation={[0, Math.PI, 0]} />
+        ))}
 
       </group>
     </group>

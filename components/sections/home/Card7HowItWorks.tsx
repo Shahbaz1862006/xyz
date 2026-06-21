@@ -1,52 +1,43 @@
 'use client'
 import { motion } from 'motion/react'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
+import { WalletCards, Zap, BadgeCheck } from 'lucide-react'
 
 const steps = [
   {
-    number: 1,
+    n: 1,
+    icon: WalletCards,
     title: 'Connect or Create',
     description: 'Import your existing TRON wallet or create a new one. Non-custodial — we never see your keys.',
+    color: '#EF0027',
+    glow: 'rgba(239,0,39,0.14)',
   },
   {
-    number: 2,
+    n: 2,
+    icon: Zap,
     title: 'Smart Fee Activates',
     description: 'Before every transfer, Coinductor scans the energy market and selects the cheapest fee method automatically.',
+    color: '#0B83FF',
+    glow: 'rgba(11,131,255,0.14)',
   },
   {
-    number: 3,
+    n: 3,
+    icon: BadgeCheck,
     title: 'Send & Save',
     description: 'Confirm the transaction and save 60–90% on fees vs. the default 30 TRX burn. Every time.',
+    color: '#26A17B',
+    glow: 'rgba(38,161,123,0.14)',
   },
 ]
 
-function GlassSphereNumber({ n, delay }: { n: number; delay: number }) {
-  return (
-    <motion.div
-      className="relative w-14 h-14 mx-auto mb-4"
-      initial={{ opacity: 0, scale: 0.6 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ type: 'spring', stiffness: 200, damping: 16, delay }}
-      whileHover={{ scale: 1.12 }}
-    >
-      <div
-        className="w-14 h-14 rounded-full flex items-center justify-center"
-        style={{
-          background: 'radial-gradient(circle at 35% 30%, rgba(11,131,255,0.4), rgba(11,131,255,0.06) 70%)',
-          border: '1px solid rgba(11,131,255,0.35)',
-          boxShadow: '0 0 20px rgba(11,131,255,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
-        }}
-      >
-        <span className="font-grifter font-bold text-2xl" style={{ color: 'var(--on-surface)' }}>{n}</span>
-      </div>
-    </motion.div>
-  )
-}
-
 export function Card7HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 px-4">
+    <section id="how-it-works" className="py-24 px-4 relative">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(11,131,255,0.04) 0%, transparent 70%)' }}
+      />
+
       <div className="max-w-6xl mx-auto">
         <SectionHeadline
           title="Three steps to"
@@ -55,27 +46,89 @@ export function Card7HowItWorks() {
           className="mb-16"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-          {/* Connector lines */}
-          <div
-            className="hidden md:block absolute top-7 left-1/3 right-1/3 h-px"
-            style={{ background: 'linear-gradient(to right, rgba(11,131,255,0.3), rgba(11,131,255,0.5), rgba(11,131,255,0.3))' }}
-          />
-
-          {steps.map((step, i) => (
+        <div className="relative">
+          {/* Horizontal connector line — desktop only */}
+          <div className="hidden md:block absolute top-[52px] left-[16.6%] right-[16.6%] h-px" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            {/* Animated flow dot */}
             <motion.div
-              key={step.number}
-              className="glass-card p-8 text-center"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15, duration: 0.5 }}
-            >
-              <GlassSphereNumber n={step.number} delay={i * 0.15} />
-              <h3 className="font-grifter font-bold text-xl mb-3" style={{ color: 'var(--on-surface)' }}>{step.title}</h3>
-              <p className="text-sm font-poppins leading-relaxed" style={{ color: 'var(--on-surface-2)' }}>{step.description}</p>
-            </motion.div>
-          ))}
+              className="absolute top-1/2 -translate-y-1/2 w-12 h-[1px]"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(11,131,255,0.6), transparent)' }}
+              animate={{ x: ['-20%', '120%'] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.5 }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {steps.map((step, i) => {
+              const Icon = step.icon
+              return (
+                <motion.div
+                  key={step.n}
+                  className="relative rounded-2xl overflow-hidden"
+                  style={{
+                    background: 'var(--glass-bg)',
+                    border: `1px solid ${step.color}20`,
+                    boxShadow: `0 4px 30px rgba(0,0,0,0.18), 0 0 40px ${step.glow}`,
+                  }}
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15, duration: 0.55 }}
+                  whileHover={{ y: -6, boxShadow: `0 16px 50px rgba(0,0,0,0.28), 0 0 60px ${step.glow}` }}
+                >
+                  {/* Top bar */}
+                  <div
+                    className="h-[2px]"
+                    style={{ background: `linear-gradient(90deg, ${step.color}, ${step.color}30, transparent)` }}
+                  />
+
+                  {/* Corner glow */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ background: `radial-gradient(ellipse at 50% 0%, ${step.glow} 0%, transparent 55%)` }}
+                  />
+
+                  {/* Large watermark number */}
+                  <div
+                    className="absolute bottom-3 right-4 font-grifter font-bold text-7xl leading-none pointer-events-none select-none"
+                    style={{ color: step.color, opacity: 0.05 }}
+                  >
+                    {step.n}
+                  </div>
+
+                  <div className="relative z-10 p-7">
+                    {/* Icon circle */}
+                    <motion.div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                      style={{
+                        background: `${step.color}18`,
+                        border: `1px solid ${step.color}35`,
+                        boxShadow: `0 0 20px ${step.glow}`,
+                      }}
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.15 + 0.2, type: 'spring', stiffness: 220, damping: 18 }}
+                    >
+                      <Icon size={22} style={{ color: step.color }} />
+                    </motion.div>
+
+                    {/* Step label */}
+                    <p className="text-[10px] font-poppins font-semibold tracking-widest uppercase mb-2" style={{ color: step.color }}>
+                      Step {step.n}
+                    </p>
+
+                    <h3 className="font-grifter font-bold text-xl mb-3" style={{ color: 'var(--on-surface)' }}>
+                      {step.title}
+                    </h3>
+                    <p className="text-sm font-poppins leading-relaxed" style={{ color: 'var(--on-surface-2)' }}>
+                      {step.description}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

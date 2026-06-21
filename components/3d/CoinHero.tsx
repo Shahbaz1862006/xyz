@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
+import { Environment } from '@react-three/drei'
 import { useTheme } from 'next-themes'
 import { TrxCoin } from './TrxCoin'
 import { OrbitRings } from './OrbitRings'
@@ -16,15 +16,15 @@ export function CoinHero({ className }: { className?: string }) {
   const [isDragging, setIsDragging] = useState(false)
   const [hasInteracted, setHasInteracted] = useState(false)
   const dragRotation = useRef({ x: 0, y: 0 })
-  const lastPointer = useRef({ x: 0, y: 0 })
+  const lastPointer  = useRef({ x: 0, y: 0 })
 
   const [reducedMotion, setReducedMotion] = useState(false)
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     setReducedMotion(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+    const h = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mq.addEventListener('change', h)
+    return () => mq.removeEventListener('change', h)
   }, [])
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
@@ -50,8 +50,7 @@ export function CoinHero({ className }: { className?: string }) {
   const onPointerUp = useCallback(() => setIsDragging(false), [])
 
   const rimSegments   = isMobile ? 48 : 96
-  const particleCount = isMobile ? 150 : 280
-  const showBloom     = !isMobile && isDark
+  const particleCount = isMobile ? 180 : 320
 
   return (
     <div
@@ -65,39 +64,29 @@ export function CoinHero({ className }: { className?: string }) {
       <Canvas
         camera={{ position: [0, 0, 7], fov: 50 }}
         gl={{ antialias: !isMobile, powerPreference: 'high-performance', alpha: true }}
+        scene={{ background: null }}
         dpr={[1, 1.5]}
         frameloop="always"
       >
-        {/*
-          Lighting for a white-face / red-rim coin — MeshPhongMaterial needs directional/point lights.
-          Key light from top-right illuminates the white face and catches the rim bevel.
-          Fill light from the left softens shadows.
-          Red accent from above warms the rim highlights.
-          Back rim light from behind creates depth separation.
-        */}
-        <ambientLight intensity={isDark ? 0.4 : 0.6} />
+        {/* Reflection env only - background=false keeps WebGL canvas transparent */}
+        <Environment preset="city" background={false} />
 
-        {/* Main key — hits the front face at an angle for a strong specular streak */}
-        <directionalLight
-          position={[4, 5, 6]}
-          intensity={isDark ? 2.2 : 1.8}
-          color="#ffffff"
-        />
+        {/* Ambient */}
+        <ambientLight intensity={isDark ? 0.35 : 0.55} />
 
-        {/* Secondary fill from the left — lifts shadow side of the white face */}
-        <directionalLight
-          position={[-4, 2, 4]}
-          intensity={isDark ? 0.9 : 0.7}
-          color="#dce8ff"
-        />
+        {/* Key light */}
+        <directionalLight position={[4, 5, 6]} intensity={isDark ? 1.5 : 1.2} color="#ffffff" />
 
-        {/* Red accent from above — warms the coin rim and logo emissive */}
-        <pointLight position={[0, 5, 3]} intensity={isDark ? 1.6 : 0.9} color="#FF1A35" />
+        {/* Fill light */}
+        <directionalLight position={[-4, 2, 4]} intensity={isDark ? 0.5 : 0.35} color="#dce8ff" />
 
-        {/* Rim back-light — adds depth, catches the beveled edge facets from behind */}
-        <pointLight position={[-4, -3, -3]} intensity={0.6} color="#CC0018" />
+        {/* Red accent */}
+        <pointLight position={[0, 5, 3]} intensity={isDark ? 1.0 : 0.55} color="#FF1A35" />
 
-        {/* Bottom fill — stops underside going completely black */}
+        {/* Back rim */}
+        <pointLight position={[-4, -3, -3]} intensity={0.4} color="#CC0018" />
+
+        {/* Bottom fill */}
         <pointLight position={[2, -5, 3]} intensity={isDark ? 0.5 : 0.35} color="#ffffff" />
 
         <TrxCoin
@@ -109,12 +98,6 @@ export function CoinHero({ className }: { className?: string }) {
         <OrbitRings isDark={isDark} />
         <AtmosphereParticles isDark={isDark} count={particleCount} />
 
-        {showBloom && (
-          <EffectComposer>
-            <Bloom intensity={0.7} luminanceThreshold={0.22} luminanceSmoothing={0.9} />
-            <Vignette offset={0.3} darkness={0.6} />
-          </EffectComposer>
-        )}
       </Canvas>
 
       {!hasInteracted && (

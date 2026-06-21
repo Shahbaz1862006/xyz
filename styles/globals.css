@@ -183,3 +183,64 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ─── 3D / Motion Enhancement Keyframes ───────────── */
+@keyframes grid-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+@keyframes dot-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 28px 28px; }
+}
+@keyframes scan-line-down {
+  0%   { top: -2%; opacity: 0; }
+  4%   { opacity: 1; }
+  96%  { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+@keyframes float-3d {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50%       { transform: translateY(-18px) rotateX(4deg); }
+}
+@keyframes border-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(11,131,255,0.25), inset 0 0 12px rgba(11,131,255,0.05); }
+  50%       { box-shadow: 0 0 30px rgba(11,131,255,0.45), inset 0 0 20px rgba(11,131,255,0.1); }
+}
+@keyframes hex-pulse {
+  0%, 100% { opacity: 0.12; }
+  50%       { opacity: 0.28; }
+}
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Background Utilities ─────────────────────────── */
+.bg-dots {
+  background-image: radial-gradient(circle, rgba(11,131,255,0.13) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(11,131,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11,131,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.animate-drift          { animation: dot-drift 22s linear infinite; }
+.animate-grid-drift     { animation: grid-drift 28s linear infinite; }
+.animate-glow-breathe   { animation: glow-breathe 5s ease-in-out infinite; }
+.animate-float-3d       { animation: float-3d 5s ease-in-out infinite; }
+.animate-border-glow    { animation: border-glow 3s ease-in-out infinite; }
+.animate-hex-pulse      { animation: hex-pulse 4s ease-in-out infinite; }
+.animate-scan-line-down { animation: scan-line-down 9s linear infinite; position: absolute; }
+
+/* ─── 3D Scroll Perspective ────────────────────────── */
+.perspective-section {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
