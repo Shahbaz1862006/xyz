@@ -51,10 +51,6 @@ function HeroBackground() {
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
       />
 
-      {/* Corner tech accent — top-left */}
-      <div className="absolute top-[88px] left-6 pointer-events-none">
-        <div className="w-10 h-10 border-t-2 border-l-2 opacity-20 rounded-tl-sm" style={{ borderColor: 'var(--primary)' }} />
-      </div>
       {/* Corner tech accent — bottom-right */}
       <div className="absolute bottom-8 right-6 pointer-events-none">
         <div className="w-10 h-10 border-b-2 border-r-2 opacity-20 rounded-br-sm" style={{ borderColor: 'var(--primary)' }} />
