@@ -1,0 +1,13 @@
+import type { Metadata } from 'next'
+import { GlassCard } from '@/components/ui/GlassCard'
+import { SectionHeadline } from '@/components/ui/SectionHeadline'
+import { GlassButton } from '@/components/ui/GlassButton'
+import { MagneticButton } from '@/components/ui/MagneticButton'
+import { Check } from 'lucide-react'
+export const metadata: Metadata = { title: 'Get the App', description: 'Get started with Coinductor in the app.' }
+const options = [
+  { name: 'Smart Send', description: 'Send from your wallet with fee handling built in.', features: ['Enter an amount and destination', 'No manual fee setup', 'Your keys stay on your phone'], cta: 'Get the App', variant: 'outline' as const },
+  { name: 'OTO Pass', description: 'Buy a pass inside the app with a payment method you already use.', features: ['Buy once in the app', 'Pay with Apple Pay', 'Pay with Google Pay'], cta: 'Get OTO Pass', variant: 'solid' as const },
+  { name: 'DApp Pass', description: 'Configure your own pass when you want more control.', features: ['Set up through a DApp', 'A more hands-on option', 'The same simple goal'], cta: 'Explore DApp Pass', variant: 'outline' as const },
+]
+export default function SubscriptionPage() { return <div className="pt-24 pb-16"><section className="py-16 px-4"><div className="max-w-6xl mx-auto"><div className="text-center mb-16"><SectionHeadline title="Choose your way to send." align="center" subtitle="Start simply, then choose the pass that fits how you want to use your wallet." /></div><div className="grid grid-cols-1 md:grid-cols-3 gap-6">{options.map((option, index) => <div key={option.name} className="relative pt-4">{index === 1 && <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10"><span className="bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full font-poppins">Easy to start</span></div>}<GlassCard className="p-8 h-full" scrollLinked><div className="mb-6"><h3 className="font-grifter font-bold text-xl mb-1" style={{ color: 'var(--on-surface)' }}>{option.name}</h3><p className="text-sm font-poppins" style={{ color: 'var(--on-surface-2)', opacity: 0.7 }}>{option.description}</p></div><ul className="space-y-3 mb-8">{option.features.map(f => <li key={f} className="flex items-start gap-2.5 text-sm font-poppins" style={{ color: 'var(--on-surface-2)' }}><Check size={14} style={{ color: 'var(--primary)', marginTop: 2, flexShrink: 0 }} />{f}</li>)}</ul><MagneticButton><GlassButton variant={option.variant} size="md" className="w-full justify-center">{option.cta}</GlassButton></MagneticButton></GlassCard></div>)}</div></div></section></div> }
