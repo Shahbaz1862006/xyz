@@ -62,10 +62,10 @@ export function Footer() {
                 <a
                   key={i}
                   href="#"
-                  className="w-8 h-8 glass-card rounded-full flex items-center justify-center transition-all hover:scale-110"
-                  style={{ color: 'var(--on-surface-2)' }}
+                  className="flex items-center justify-center transition-all hover:scale-110 hover:opacity-100"
+                  style={{ color: 'var(--on-surface-2)', opacity: 0.7 }}
                 >
-                  <Icon size={14} />
+                  <Icon size={18} />
                 </a>
               ))}
             </div>

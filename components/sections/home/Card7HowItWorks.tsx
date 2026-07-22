@@ -1,6 +1,56 @@
 'use client'
-import { motion } from 'motion/react'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
+import { BentoGrid, BentoCard } from '@/components/ui/Bento'
 import { WalletCards, Send, BadgeCheck } from 'lucide-react'
-const steps = [{ n: 1, icon: WalletCards, title: 'Open your wallet', description: 'Create a wallet or bring one you already use. Your keys stay on your phone.', color: '#EF0027' }, { n: 2, icon: Send, title: 'Enter the details', description: 'Choose an amount and destination. Smart Send takes care of the fee side for you.', color: '#0B83FF' }, { n: 3, icon: BadgeCheck, title: 'Send with confidence', description: 'Review your transfer and tap send. It is designed to work simply the first time.', color: '#26A17B' }]
-export function Card7HowItWorks() { return <section id="how-it-works" className="py-14 md:py-24 px-4 relative"><div className="max-w-6xl mx-auto"><SectionHeadline title="Three steps to" accent=" a simple send." align="center" className="mb-16" /><div className="grid grid-cols-1 md:grid-cols-3 gap-6">{steps.map((step, i) => { const Icon = step.icon; return <motion.div key={step.n} className="relative rounded-2xl overflow-hidden p-7" style={{ background: 'var(--glass-bg)', border: `1px solid ${step.color}20` }} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}><Icon size={22} className="mb-5" style={{ color: step.color }} /><p className="text-[10px] font-poppins font-semibold tracking-widest uppercase mb-2" style={{ color: step.color }}>Step {step.n}</p><h3 className="font-grifter font-bold text-xl mb-3" style={{ color: 'var(--on-surface)' }}>{step.title}</h3><p className="text-sm font-poppins leading-relaxed" style={{ color: 'var(--on-surface-2)' }}>{step.description}</p></motion.div> })}</div></div></section> }
+
+const steps = [
+  {
+    icon: WalletCards,
+    eyebrow: 'Step 1',
+    title: 'Open your wallet',
+    description: 'Create a wallet or bring one you already use. Your keys stay on your phone.',
+    accent: '#EF0027',
+    tone: 'light' as const,
+  },
+  {
+    icon: Send,
+    eyebrow: 'Step 2',
+    title: 'Enter the details',
+    description: 'Choose an amount and a destination — a friend, a merchant, anyone. Smart Send takes care of the fee side for you.',
+    accent: 'var(--primary)',
+    tone: 'dark' as const,
+  },
+  {
+    icon: BadgeCheck,
+    eyebrow: 'Step 3',
+    title: 'Send with confidence',
+    description: 'Review your transfer and tap send. It is designed to work simply the first time.',
+    accent: '#26A17B',
+    tone: 'light' as const,
+  },
+]
+
+export function Card7HowItWorks() {
+  return (
+    <section id="how-it-works" className="py-14 md:py-24 px-4 relative">
+      <div className="max-w-6xl mx-auto">
+        <SectionHeadline title="Three steps to" accent=" a simple send." align="center" className="mb-12 md:mb-16" />
+        <BentoGrid>
+          {steps.map((step, i) => (
+            <BentoCard
+              key={step.eyebrow}
+              tone={step.tone}
+              accent={step.accent}
+              eyebrow={step.eyebrow}
+              icon={<step.icon size={19} />}
+              title={step.title}
+              description={step.description}
+              colSpan={2}
+              index={i}
+            />
+          ))}
+        </BentoGrid>
+      </div>
+    </section>
+  )
+}

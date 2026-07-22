@@ -41,7 +41,7 @@ export function SectionHeadline({
         {accent ? (
           <>
             {titleParts[0]}
-            {!accent.startsWith(' ') && <br />}
+            {accent.startsWith(' ') ? ' ' : <br />}
             <span style={{ color: 'var(--primary)' }}>{accent.trimStart()}</span>
             {titleParts[1]}
           </>

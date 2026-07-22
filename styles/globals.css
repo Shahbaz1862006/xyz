@@ -112,6 +112,16 @@ body {
   transition: background 0.25s ease, color 0.25s ease;
 }
 
+/* ─── Icons ───────────────────────────────────────────
+   Unify every lucide icon to a 1.5 stroke, site-wide.
+   CSS overrides the inline stroke-width attribute, so no
+   per-icon prop is needed and the weight can never drift. */
+svg.lucide {
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ─── Glass Card ──────────────────────────────────── */
 .glass-card {
   background: var(--glass-bg);

@@ -1,8 +1,63 @@
 import type { Metadata } from 'next'
-import { GlassCard } from '@/components/ui/GlassCard'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
 import { GlassButton } from '@/components/ui/GlassButton'
+import { BentoGrid, BentoCard } from '@/components/ui/Bento'
 import { Shield, Lock, Eye } from 'lucide-react'
+
 export const metadata: Metadata = { title: 'Security', description: 'Simple, personal wallet security.' }
-const pillars = [{ icon: Shield, title: 'Your keys stay on your phone', description: 'Your wallet remains yours. Coinductor does not hold your keys or your funds.' }, { icon: Lock, title: 'Lock your wallet', description: 'Use Face ID, Touch ID, or your PIN to keep access private.' }, { icon: Eye, title: 'Keep activity private', description: 'Your wallet activity is personal, and we keep the experience focused on you.' }]
-export default function SecurityPage() { return <div className="pt-24 pb-16"><section className="py-16 px-4"><div className="max-w-6xl mx-auto"><div className="text-center mb-16"><SectionHeadline title="Your wallet stays yours." align="center" subtitle="Clear protections, without the technical lecture." /></div><GlassCard className="p-12 text-center mb-12" scrollLinked><div className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(11,131,255,0.12)' }}><Shield size={30} style={{ color: 'var(--primary)' }} /></div><h3 className="font-grifter font-bold text-2xl mb-2" style={{ color: 'var(--on-surface)' }}>Security that stays personal</h3><p className="font-poppins text-sm max-w-lg mx-auto" style={{ color: 'var(--on-surface-2)' }}>Coinductor is designed to help you keep control of your wallet, your keys, and your money.</p></GlassCard><div className="grid grid-cols-1 md:grid-cols-3 gap-6">{pillars.map(p => { const Icon = p.icon; return <GlassCard key={p.title} className="p-7"><Icon size={20} className="mb-4" style={{ color: 'var(--primary)' }} /><h3 className="font-grifter font-bold text-lg mb-2" style={{ color: 'var(--on-surface)' }}>{p.title}</h3><p className="font-poppins text-sm leading-relaxed" style={{ color: 'var(--on-surface-2)', opacity: 0.75 }}>{p.description}</p></GlassCard> })}</div><div className="text-center mt-16"><GlassButton variant="outline" href="/support">View Security FAQ</GlassButton></div></div></section></div> }
+
+const pillars = [
+  { icon: Shield, eyebrow: 'Your keys', title: 'Your keys stay on your phone', description: 'Your wallet remains yours. Coinductor does not hold your keys or your funds.', accent: '#0B83FF' },
+  { icon: Lock, eyebrow: 'Access', title: 'Lock your wallet', description: 'Use Face ID, Touch ID, or your PIN to keep access private.', accent: '#26A17B' },
+  { icon: Eye, eyebrow: 'Privacy', title: 'Keep activity private', description: 'Your wallet activity is personal, and we keep the experience focused on you.', accent: '#4DA3FF' },
+]
+
+export default function SecurityPage() {
+  return (
+    <div className="pt-24 pb-16">
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14 md:mb-16">
+            <SectionHeadline
+              title="Your wallet stays yours."
+              align="center"
+              subtitle="Clear protections, without the technical lecture."
+            />
+          </div>
+
+          <BentoGrid>
+            {/* Large dark intro card */}
+            <BentoCard
+              tone="dark"
+              accent="var(--primary)"
+              eyebrow="Non-custodial"
+              icon={<Shield size={19} />}
+              title="Security that stays personal"
+              description="Coinductor is designed to help you keep control of your wallet, your keys, and your money — nothing lives on our servers."
+              colSpan={3}
+              index={0}
+            />
+
+            {pillars.map((p, i) => (
+              <BentoCard
+                key={p.title}
+                tone="light"
+                accent={p.accent}
+                eyebrow={p.eyebrow}
+                icon={<p.icon size={19} />}
+                title={p.title}
+                description={p.description}
+                colSpan={3}
+                index={i + 1}
+              />
+            ))}
+          </BentoGrid>
+
+          <div className="text-center mt-14 md:mt-16">
+            <GlassButton variant="outline" href="/support">View Security FAQ</GlassButton>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

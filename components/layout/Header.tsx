@@ -71,7 +71,7 @@ export function Header() {
             </GlassButton>
           </MagneticButton>
           <button
-            className="md:hidden w-9 h-9 glass-card rounded-full flex items-center justify-center transition-colors"
+            className="md:hidden w-9 h-9 rounded-full flex items-center justify-center transition-colors"
             style={{ color: 'var(--on-surface-2)' }}
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"

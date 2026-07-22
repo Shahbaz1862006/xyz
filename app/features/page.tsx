@@ -1,13 +1,94 @@
 import type { Metadata } from 'next'
-import { GlassCard } from '@/components/ui/GlassCard'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
 import { GlassButton } from '@/components/ui/GlassButton'
+import { BentoGrid, BentoCard, BentoChip } from '@/components/ui/Bento'
 import { Send, CreditCard, Layers, Shield } from 'lucide-react'
+
 export const metadata: Metadata = { title: 'Features', description: 'Simple tools for sending crypto with less fee friction.' }
-const features = [
-  { icon: Send, title: 'Smart Send', description: 'Enter an amount and destination, then tap send. Coinductor handles the fee side so you can send USDT without manual setup.', detail: ['Simple send flow', 'Fees handled for you', 'Works from your wallet'] },
-  { icon: CreditCard, title: 'OTO Pass', description: 'Buy a pass inside the app with Apple Pay or Google Pay. You do not need crypto to get started.', detail: ['Buy once in the app', 'Apple Pay supported', 'Google Pay supported'] },
-  { icon: Layers, title: 'DApp Pass', description: 'A pass option for users who want more control. Configure your own pass through a DApp.', detail: ['More control', 'Configure through a DApp', 'Same simple outcome'] },
-  { icon: Shield, title: 'Your wallet, your keys', description: 'Your keys stay on your phone, where they belong.', detail: ['Local key storage', 'Biometric lock support', 'Private by design'] },
-]
-export default function FeaturesPage() { return <div className="pt-24 pb-16"><section className="py-16 px-4"><div className="max-w-6xl mx-auto"><div className="text-center mb-16"><SectionHeadline title="Send with less hassle." align="center" subtitle="Three clear ways to make sending crypto feel more familiar." /></div><div className="grid grid-cols-1 md:grid-cols-2 gap-6">{features.map(f => { const Icon = f.icon; return <GlassCard key={f.title} className="p-8 relative overflow-hidden" scrollLinked><div className="relative z-10"><div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: 'rgba(11,131,255,0.1)' }}><Icon size={22} style={{ color: 'var(--on-surface-2)' }} /></div><h3 className="font-grifter font-bold text-xl mb-3" style={{ color: 'var(--on-surface)' }}>{f.title}</h3><p className="font-poppins text-sm leading-relaxed mb-5" style={{ color: 'var(--on-surface-2)' }}>{f.description}</p><ul className="space-y-1.5">{f.detail.map(d => <li key={d} className="flex items-center gap-2 text-xs font-poppins" style={{ color: 'var(--on-surface-2)', opacity: 0.7 }}><span className="w-1.5 h-1.5 rounded-full bg-primary" />{d}</li>)}</ul></div></GlassCard> })}</div><div className="text-center mt-16"><GlassButton variant="solid" size="lg" href="/subscription">Get the App</GlassButton></div></div></section></div> }
+
+const smartSendPoints = ['Simple send flow', 'Fees handled for you', 'Works from your wallet']
+
+export default function FeaturesPage() {
+  return (
+    <div className="pt-24 pb-16">
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14 md:mb-16">
+            <SectionHeadline
+              title="Send with less hassle."
+              align="center"
+              subtitle="Three clear ways to make sending crypto feel more familiar — plus a wallet that stays yours."
+            />
+          </div>
+
+          <BentoGrid>
+            {/* Smart Send — large dark hero (primary) */}
+            <BentoCard
+              tone="dark"
+              accent="var(--primary)"
+              eyebrow="Just send"
+              icon={<Send size={19} />}
+              title="Smart Send"
+              description="Enter an amount and destination, then tap send. Coinductor handles the fee side so you can send USDT without manual setup."
+              colSpan={4}
+              rowSpan={2}
+              index={0}
+            >
+              <div className="flex flex-wrap gap-2.5">
+                {smartSendPoints.map((p) => (
+                  <BentoChip key={p} label={p} onDark />
+                ))}
+              </div>
+            </BentoCard>
+
+            {/* OTO Pass */}
+            <BentoCard
+              tone="light"
+              accent="#26A17B"
+              eyebrow="No crypto needed"
+              icon={<CreditCard size={19} />}
+              title="OTO Pass"
+              description="Buy a pass inside the app with Apple Pay or Google Pay. You do not need crypto to get started."
+              colSpan={2}
+              index={1}
+            />
+
+            {/* DApp Pass — secondary/advanced */}
+            <BentoCard
+              tone="light"
+              accent="#4DA3FF"
+              eyebrow="More control · optional"
+              icon={<Layers size={19} />}
+              title="DApp Pass"
+              description="A pass option for when you want more control. Configure your own pass through a DApp."
+              colSpan={2}
+              index={2}
+            />
+
+            {/* Your keys — full width */}
+            <BentoCard
+              tone="light"
+              accent="#0B83FF"
+              eyebrow="Security"
+              icon={<Shield size={19} />}
+              title="Your wallet, your keys"
+              description="Your keys stay on your phone, where they belong."
+              colSpan={6}
+              index={3}
+            >
+              <div className="flex flex-wrap gap-2.5">
+                {['Local key storage', 'Biometric lock support', 'Private by design'].map((p) => (
+                  <BentoChip key={p} label={p} />
+                ))}
+              </div>
+            </BentoCard>
+          </BentoGrid>
+
+          <div className="text-center mt-14 md:mt-16">
+            <GlassButton variant="solid" size="lg" href="/subscription">Get the App</GlassButton>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

@@ -56,7 +56,7 @@ export default function ContactPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 20 }}
               >
-                <CheckCircle size={48} className="mx-auto mb-4" style={{ color: 'var(--usdt-green)' }} />
+                <CheckCircle size={48} className="mx-auto mb-4" style={{ color: 'var(--on-surface)' }} />
                 <h3 className="font-grifter font-bold text-2xl mb-2" style={{ color: 'var(--on-surface)' }}>
                   Message Sent
                 </h3>
