@@ -20,7 +20,10 @@ export function BentoGrid({ children, className }: BentoGridProps) {
   return (
     <div
       className={cn(
-        'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5 auto-rows-[minmax(0,1fr)]',
+        // Mobile (<md): natural per-card height — no equal-row stretch, so short
+        // cards don't inherit the tallest sibling's height in the single column.
+        // md+ : restore equal-row height for the side-by-side bento layout.
+        'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-5 auto-rows-auto md:auto-rows-[minmax(0,1fr)]',
         className
       )}
     >

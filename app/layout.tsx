@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { Header } from '@/components/layout/Header'
@@ -26,6 +26,17 @@ export const metadata: Metadata = {
     description: 'Send USDT simply with smart fee handling and personal wallet control.',
     type: 'website',
   },
+}
+
+// Emits <meta name="color-scheme" content="light dark"> so mobile browsers
+// (Android Chrome auto-dark, Samsung Internet forced-dark, etc.) know the page
+// handles both themes itself and skip their heuristic auto-darkening pass —
+// which was muddying light mode on mobile. width/initialScale are set
+// explicitly since defining `viewport` opts out of Next's auto-injected default.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  colorScheme: 'light dark',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
