@@ -29,6 +29,13 @@ export const supportArticles: SupportArticle[] = [
     lastUpdated: '2026-06-08',
   },
   {
+    slug: 'pending-and-rejected-payments',
+    title: 'Pending and Rejected Payments',
+    excerpt: 'Finish a payment you started earlier, confirm one sent over from the web app, or restore and delete payments you rejected.',
+    category: 'Features',
+    lastUpdated: '2026-07-25',
+  },
+  {
     slug: 'subscription-management',
     title: 'Managing Your Subscription',
     excerpt: 'Upgrade, downgrade, or cancel your Coinductor plan. Covers billing cycles, refund policy, and plan switching.',

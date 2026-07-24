@@ -2,14 +2,15 @@ import type { Metadata } from 'next'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
 import { GlassButton } from '@/components/ui/GlassButton'
 import { BentoGrid, BentoCard } from '@/components/ui/Bento'
-import { Shield, Lock, Eye } from 'lucide-react'
+import { Shield, Lock, Eye, Smartphone } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Security', description: 'Simple, personal wallet security.' }
 
 const pillars = [
-  { icon: Shield, eyebrow: 'Your keys', title: 'Your keys stay on your phone', description: 'Your wallet remains yours. Coinductor does not hold your keys or your funds.', accent: '#0B83FF' },
-  { icon: Lock, eyebrow: 'Access', title: 'Lock your wallet', description: 'Use Face ID, Touch ID, or your PIN to keep access private.', accent: '#26A17B' },
-  { icon: Eye, eyebrow: 'Privacy', title: 'Keep activity private', description: 'Your wallet activity is personal, and we keep the experience focused on you.', accent: '#4DA3FF' },
+  { icon: Shield, eyebrow: 'Your keys', title: 'Your keys stay on your phone', description: 'Your wallet remains yours. Coinductor does not hold your keys or your funds.', accent: '#0B83FF', colSpan: 3 as const },
+  { icon: Lock, eyebrow: 'Access', title: 'Lock your wallet', description: 'Use Face ID, Touch ID, or your PIN to keep access private.', accent: '#26A17B', colSpan: 3 as const },
+  { icon: Eye, eyebrow: 'Privacy', title: 'Keep activity private', description: 'Your wallet activity is personal, and we keep the experience focused on you.', accent: '#4DA3FF', colSpan: 3 as const },
+  { icon: Smartphone, eyebrow: 'Confirmation', title: 'Your phone is the last step', description: 'A payment can be started from the connected web app, but it only sends once you confirm it on your phone. Nothing leaves your wallet without you.', accent: '#EF146E', colSpan: 6 as const },
 ]
 
 export default function SecurityPage() {
@@ -47,7 +48,7 @@ export default function SecurityPage() {
                 icon={<p.icon size={19} />}
                 title={p.title}
                 description={p.description}
-                colSpan={3}
+                colSpan={p.colSpan}
                 index={i + 1}
               />
             ))}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { SectionHeadline } from '@/components/ui/SectionHeadline'
 import { GlassButton } from '@/components/ui/GlassButton'
 import { BentoGrid, BentoCard, BentoChip } from '@/components/ui/Bento'
-import { Send, CreditCard, Layers, Shield } from 'lucide-react'
+import { Send, CreditCard, Layers, Shield, Clock } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Features', description: 'Simple tools for sending crypto with less fee friction.' }
 
@@ -17,7 +17,7 @@ export default function FeaturesPage() {
             <SectionHeadline
               title="Send with less hassle."
               align="center"
-              subtitle="Three clear ways to make sending crypto feel more familiar — plus a wallet that stays yours."
+              subtitle="Simple ways to make sending crypto feel more familiar — plus a wallet, and a final say, that stay yours."
             />
           </div>
 
@@ -65,16 +65,34 @@ export default function FeaturesPage() {
               index={2}
             />
 
-            {/* Your keys — full width */}
+            {/* Pending & rejected payments — unfinished sends live here */}
+            <BentoCard
+              tone="light"
+              accent="#EF146E"
+              eyebrow="Pending & rejected"
+              icon={<Clock size={19} />}
+              title="Pick up where you left off"
+              description="Started a payment but didn't finish? It waits in Pending until you're ready — including ones started from the web app. Changed your mind? Rejected payments stay put, so you can bring one back or delete it for good."
+              colSpan={3}
+              index={3}
+            >
+              <div className="flex flex-wrap gap-2.5">
+                {['Finish it later', 'Restore or delete', 'Confirmed on your phone'].map((p) => (
+                  <BentoChip key={p} label={p} accent="#EF146E" />
+                ))}
+              </div>
+            </BentoCard>
+
+            {/* Your keys */}
             <BentoCard
               tone="light"
               accent="#0B83FF"
               eyebrow="Security"
               icon={<Shield size={19} />}
               title="Your wallet, your keys"
-              description="Your keys stay on your phone, where they belong."
-              colSpan={6}
-              index={3}
+              description="Your keys stay on your phone, where they belong — so your phone is always the last step before anything sends."
+              colSpan={3}
+              index={4}
             >
               <div className="flex flex-wrap gap-2.5">
                 {['Local key storage', 'Biometric lock support', 'Private by design'].map((p) => (
